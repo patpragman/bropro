@@ -18,23 +18,45 @@ import os
 import signal
 
 from flask import Flask, render_template, Response
-import cv2
+from flask import send_from_directory
+
 from subprocess import Popen, PIPE
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['UPLOAD_FOLDER'] = "static"
+
 print('engage!')
 
 # necessary vars
 recording_process = None
 
+@app.route('/static/<path:filename>/get')
+def download_file(filename):
+    return send_from_directory(os.path.join(os.getcwd(), "static"),
+                               filename, as_attachment=True)
+
+@app.route('/static/<path:filename>/delete')
+def delete_video(filename):
+    print('deleting!')
+
+    os.remove(f"static/{filename}")
+    return index()
+
 
 @app.route('/')
 def index():
+    current_files = os.listdir("static")
+
     if recording_process:
-        return render_template('index.html', camera_status="Click to stop recording")
+        return render_template('index.html',
+                               current_files=current_files,
+                               camera_status="Click to stop recording")
     else:
-        return render_template('index.html', camera_status="Click to start recording")
+        return render_template('index.html',
+                               current_files=current_files,
+                               camera_status="Click to start recording")
 
 @app.route('/toggle')
 def toggle():
@@ -59,23 +81,9 @@ def toggle():
         recording_process = None
     return index()
 
-def gen_frames():
-    camera = cv2.VideoCapture(0)
-    while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat
-
-
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True,port=5000)
+    app.run(debug=True,
+            threaded=True,
+            port=5000)

@@ -17,5 +17,20 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div>
+            <ul>
+                {% for file in current_files %}
+                    <li>
+                        <a href="/static/{{ file }}/get">{{ file }}</a><a href="/static/{{ file }}/delete">[delete]</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+
     </body>
 </html>
