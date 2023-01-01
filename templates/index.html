@@ -7,30 +7,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+        <!-- Bootstrap CSS -->
+        <link rel='stylesheet' href='/static/bootstrap/css/bootstrap.css'>
+
+
     </head>
 
     <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8  offset-lg-2">
-                <a href="/toggle">{{ camera_status }}</a>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
-        <div>
-            <ul>
-                {% for file in current_files %}
-                    <li>
-                        <a href="/static/{{ file }}/get">{{ file }}</a><a href="/static/{{ file }}/delete">[delete]</a>
-                    </li>
-                {% endfor %}
-            </ul>
 
-        </div>
+        <a id="record_button" onclick="toggle();" class="btn {{status }} btn-block w-100" href="/toggle">{{ camera_status }}</a>
+
+
+        <h1>Current Movies:</h1>
+
+        <ul class="list-group" style="list-style-type: none;">
+            {% for file in current_files %}
+                <li class="nav-item d-flex">
+                    <a class="btn btn-primary d-inline" href="/static/{{ file }}/get">{{ file }}</a>
+                    <a class="btn btn-danger d-inline" href="/static/{{ file }}/delete">[x]</a>
+                </li>
+            {% endfor %}
+        </ul>
 
     </div>
 
     </body>
+
+    <script src="static/bootstrap/js/bootstrap.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        function toggle() {
+            const camera_button = document.getElementById("record_button");
+            camera_button.innerText = "...";
+
+        }
+    </script>
 </html>
