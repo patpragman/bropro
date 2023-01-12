@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source venv/bin/activate
-venv/bin/python -m flask run
+flask run --host=0.0.0.0
