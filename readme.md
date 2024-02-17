@@ -11,6 +11,9 @@ Basically... there's only a few things you need to do.
 5. run the install script (start.sh)
 6. enjoy!
 
+## Fully completed BroPro in the wild.
+
+![bropro.png](bropro.png)
 
 ## Why?
 
