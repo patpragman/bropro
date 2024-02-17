@@ -15,4 +15,4 @@ Basically... there's only a few things you need to do.
 ## Why?
 
 Because it was cool!  And because I didn't want to pay $500 for a GoPro
-for my nephew.
+for my nephew.  Furthermore, I have other projects which could use a tool which could record video.
